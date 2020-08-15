@@ -1,10 +1,20 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
+import {HttpClient} from "@angular/common/http";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'home-media';
+
+    constructor(private httpClient: HttpClient) {
+    }
+
+    runServer(): void {
+        this.httpClient.get<any>('api/transformer/media-files').subscribe(() => {
+            console.log('server test');
+        });
+    }
+
 }
