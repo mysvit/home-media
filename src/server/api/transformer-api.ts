@@ -1,4 +1,6 @@
 import * as express from 'express';
+import {ConfigService} from "../config/config";
+import {FileLib} from "../core/file-lib";
 
 export class TransformerApi {
 
@@ -14,8 +16,12 @@ export class TransformerApi {
 class Transformer {
 
     public static getMediaFiles(request: express.Request, response: express.Response) {
-        console.log('getMediaFiles');
-        response.status(200).send('TEST');
+        const config = ConfigService.DefaultWindowsConfig()
+        FileLib.readDir(config.media_path)
+            .subscribe(fileNames => {
+                    response.status(200).send(fileNames);
+                }
+            )
     }
 
 }

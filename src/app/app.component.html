@@ -1,1 +1,8 @@
 <button (click)="this.runServer()">RUN SERVER</button>
+
+<div>
+    List of files
+    <div *ngFor="let file of this.files">
+        {{file}}
+    </div>
+</div>

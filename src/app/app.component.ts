@@ -8,13 +8,14 @@ import {HttpClient} from "@angular/common/http";
 })
 export class AppComponent {
 
+    files: Array<string>;
+
     constructor(private httpClient: HttpClient) {
     }
 
     runServer(): void {
-        this.httpClient.get<any>('api/transformer/media-files').subscribe(() => {
-            console.log('server test');
-        });
+        this.httpClient.get<any>('api/transformer/media-files')
+            .subscribe(files => this.files = files);
     }
 
 }
