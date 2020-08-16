@@ -1,8 +1,13 @@
 <button (click)="this.runServer()">RUN SERVER</button>
 
 <div>
-    List of files
-    <div *ngFor="let file of this.files">
-        {{file}}
-    </div>
+    List of files:
+    <ng-container *ngFor="let file of this.files">
+        <div class="hm-media-file" (click)="this.getFileInfo(file)">
+            <div>{{file.fileName}}</div>
+            <div *ngFor="let info of file.streamInfo">
+                {{info.id}} {{info.title}}
+            </div>
+        </div>
+    </ng-container>
 </div>
