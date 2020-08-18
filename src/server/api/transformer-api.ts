@@ -14,6 +14,7 @@ export class TransformerApi {
     constructor() {
         this.router.get(this.path + '/get-media-files', Transformer.getMediaFiles);
         this.router.post(this.path + '/get-media-file-info', Transformer.getMedialFileInfo);
+        this.router.post(this.path + '/get-media-file-streams', Transformer.getMediaFileStreams);
     }
 
 }
@@ -33,10 +34,21 @@ class Transformer {
         const mif = <MedialFileInfo>request.body
         if (Transformer.checkFileName(config.mediaPath, mif.fileName)) {
             const mediaFileName = path.resolve(config.mediaPath, mif.fileName)
-            ExecLib.exec(FFmpegLib.getInfo({config: config, fileName: mediaFileName}))
+            ExecLib.exec(FFmpegLib.ffprobeCodecInfo({config: config, fileName: mediaFileName}))
                 .subscribe(stdOut => {
-                    mif.streamInfo = FFmpegParserLib.getStreamInfo(stdOut)
+                    mif.streamInfo = FFmpegParserLib.ffprobeCodecInfoParse(stdOut)
                     response.status(200).send(mif)
+                })
+        }
+    }
+
+    public static getMediaFileStreams(request: express.Request, response: express.Response) {
+        const config = ConfigService.DefaultWindowsConfig()
+        const mif = <MedialFileInfo>request.body
+        if (Transformer.checkFileName(config.mediaPath, mif.fileName)) {
+            ExecLib.exec(FFmpegLib.getStreams({config: config, mif: mif}))
+                .subscribe(stdOut => {
+                    response.status(200).send(stdOut)
                 })
         }
     }

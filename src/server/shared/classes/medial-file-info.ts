@@ -1,6 +1,9 @@
 export interface StreamInfo {
-    id:number
-    title:string
+    id: number
+    codec_name: string
+    codec_type: string
+
+    isExtract: boolean
 }
 
 export interface MedialFileInfo {

@@ -4,10 +4,12 @@
     List of files:
     <ng-container *ngFor="let file of this.files">
         <div class="hm-media-file" (click)="this.getFileInfo(file)">
-            <div>{{file.fileName}}</div>
+            <div>{{file.fileName}}<button (click)="this.getMediaFileStreams(file)">get stream</button></div>
             <div *ngFor="let info of file.streamInfo">
-                {{info.id}} {{info.title}}
+                {{info.id}} {{info.codec_type}} {{info.codec_name}}
             </div>
         </div>
     </ng-container>
 </div>
+
+<div #ffmpegOUT></div>

@@ -11,6 +11,8 @@ export class AppComponent {
 
     files: Array<MedialFileInfo>;
 
+    @ViewChild('ffmpegOUT') ffmpegOUT: ElementRef
+
     constructor(private httpClient: HttpClient) {
     }
 
@@ -24,6 +26,14 @@ export class AppComponent {
         this.httpClient.post<any>('api/transformer/get-media-file-info', medialFileInfo)
             .subscribe((info: MedialFileInfo) => {
                 file.streamInfo = info.streamInfo
+            });
+    }
+
+    getMediaFileStreams(file: MedialFileInfo) {
+        file.streamInfo[1].isExtract = true
+        this.httpClient.post<any>('api/transformer/get-media-file-streams', file)
+            .subscribe(out => {
+                this.ffmpegOUT.nativeElement.innerText = out
             });
     }
 
