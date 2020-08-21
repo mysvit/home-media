@@ -1,6 +1,7 @@
 export class AppConfig {
 
-    mediaPath: string
+    userPath: string
+    tempPath: string
     ffmpegFilePath: string
     ffprobeFilePath: string
 
@@ -8,8 +9,11 @@ export class AppConfig {
         if (!obj) {
             return
         }
-        if (obj.mediaPath) {
-            this.mediaPath = obj.mediaPath
+        if (obj.userPath) {
+            this.userPath = obj.userPath
+        }
+        if (obj.tempPath) {
+            this.tempPath = obj.tempPath
         }
         if (obj.ffmpegFilePath) {
             this.ffmpegFilePath = obj.ffmpegFilePath
@@ -26,7 +30,8 @@ export class ConfigService {
     static DefaultWindowsConfig() {
         return new AppConfig(
             {
-                mediaPath: 'c:\\temp\\media',
+                userPath: 'c:\\temp\\home_media\\user',
+                tempPath: 'c:\\temp\\home_media\\temp',
                 ffmpegFilePath: 'c:\\Program Files\\ffmpeg\\bin\\ffmpeg.exe',
                 ffprobeFilePath: 'c:\\Program Files\\ffmpeg\\bin\\ffprobe.exe'
             }

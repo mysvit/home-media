@@ -1,6 +1,6 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {MedialFileInfo} from '../server/shared/classes/medial-file-info'
+import {IMedialFileInfo, IMedialInfo} from '../server/shared/classes/medial-file-info'
 
 @Component({
     selector: 'app-root',
@@ -9,30 +9,33 @@ import {MedialFileInfo} from '../server/shared/classes/medial-file-info'
 })
 export class AppComponent {
 
-    files: Array<MedialFileInfo>;
+    medialInfo: IMedialInfo = <IMedialInfo>{mediaPath:'c:\\temp\\home_media\\media'};
 
     @ViewChild('ffmpegOUT') ffmpegOUT: ElementRef
 
     constructor(private httpClient: HttpClient) {
     }
 
-    runServer(): void {
-        this.httpClient.get<any>('api/transformer/get-media-files')
-            .subscribe(files => this.files = files.map(file => <MedialFileInfo>{fileName: file}));
+    getMediaInfo(): void {
+        this.httpClient.post<any>('api/transformer/get-media-info', this.medialInfo)
+            .subscribe((medialInfo: IMedialInfo) => this.medialInfo = medialInfo);
     }
 
-    getFileInfo(file: MedialFileInfo) {
-        const medialFileInfo = <MedialFileInfo>{fileName: file.fileName}
-        this.httpClient.post<any>('api/transformer/get-media-file-info', medialFileInfo)
-            .subscribe((info: MedialFileInfo) => {
-                file.streamInfo = info.streamInfo
+    getFileInfo(mfi: IMedialFileInfo) {
+        // const medialFileInfo = <IMedialFileInfo>{fileName: file.fileName}
+        this.httpClient.post<any>('api/transformer/get-media-file-info', mfi)
+            .subscribe((resMedialFileInfo: IMedialFileInfo) => {
+                mfi.errorMessage = resMedialFileInfo.errorMessage
+                mfi.streamInfo = resMedialFileInfo.streamInfo
             });
     }
 
-    getMediaFileStreams(file: MedialFileInfo) {
+    getMediaFileStreams(file: IMedialFileInfo) {
         file.streamInfo[1].isExtract = true
-        this.httpClient.post<any>('api/transformer/get-media-file-streams', file)
+
+        this.httpClient.post('api/transformer/get-media-file-streams', file)
             .subscribe(out => {
+                console.log(out)
                 this.ffmpegOUT.nativeElement.innerText = out
             });
     }

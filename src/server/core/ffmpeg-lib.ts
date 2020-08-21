@@ -1,24 +1,31 @@
 // TODO: add tests
 
-import {MedialFileInfo, StreamInfo} from '../shared/classes/medial-file-info'
 import {AppConfig} from '../config/config'
 import * as path from 'path'
+import {IMedialFileInfo, IStreamInfo} from '../shared/classes/medial-file-info'
 
 export class FFmpegLib {
 
-    static ffprobeCodecInfo(param: { fileName: string; config: AppConfig }) {
+    static ffprobeCodecInfo(param: { mfi: IMedialFileInfo; config: AppConfig }) {
         const ffprobe_parameters = '-v error -show_format -show_streams';
-        return `"${param.config.ffprobeFilePath}" ${ffprobe_parameters} "${param.fileName}"`
+        const execString = `"${param.config.ffprobeFilePath}" ${ffprobe_parameters} "${param.mfi.fileName}"`
+        console.log(execString)
+        return execString
     }
 
-    static getStreams(param: { mif: MedialFileInfo; config: AppConfig }) {
-        const mediaFileName = path.resolve(param.config.mediaPath, param.mif.fileName)
-        let execString = `"${param.config.ffprobeFilePath}" -i "${mediaFileName}"`;
-        param.mif.streamInfo.forEach(s => {
+    static getStreams(param: { mfi: IMedialFileInfo; config: AppConfig }) {
+        // const mediaFileName = path.resolve(param.config.mediaPath, param.mif.fileName)
+        let execString = `"${param.config.ffmpegFilePath}" -y -i "${param.mfi.fileName}" `
+        param.mfi.streamInfo.forEach(s => {
             if (s.isExtract) {
-                execString += ` -map 0:${s.id} -c copy ${s.id}_${s.codec_type}.${s.codec_name}`
+                const streamName = path.resolve(`${s.id}_${s.codec_type}.${s.codec_name}`)
+                execString += ` -map 0:${s.id} -c copy ${streamName}`
             }
         })
+        console.log(execString)
+        const outFile = path.resolve('out.txt')
+        execString += ` > "${outFile}" 2>&1`
+        return execString
     }
 
 }
@@ -43,14 +50,14 @@ export class FFmpegParserLib {
     //     return streamInfo
     // }
 
-    static ffprobeCodecInfoParse(ffprobeOut: Array<any>) {
-        let streamInfo: Array<StreamInfo> = []
-        const lines = ffprobeOut[0].split('\r\n')
+    static ffprobeCodecInfoParse(ffprobeOut: string) {
+        let streamInfo: Array<IStreamInfo> = []
+        const lines = ffprobeOut.split('\r\n')
         let id = 0;
         if (lines[0] !== '[STREAM]') {
             return streamInfo
         } else {
-            streamInfo.push(<StreamInfo>{id: id})
+            streamInfo.push(<IStreamInfo>{id: id})
         }
         for (let i = 0; i < lines.length; i++) {
             if (lines[i].indexOf('[/STREAM]') >= 0) {
@@ -59,7 +66,7 @@ export class FFmpegParserLib {
             const param = this.getCodecParam(lines[i])
             if (param) {
                 if (!streamInfo[id]) {
-                    streamInfo.push(<StreamInfo>{id: id})
+                    streamInfo.push(<IStreamInfo>{id: id})
                 }
                 streamInfo[id][param[0]] = param[1]
             }

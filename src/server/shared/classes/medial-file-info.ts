@@ -1,4 +1,4 @@
-export interface StreamInfo {
+export interface IStreamInfo {
     id: number
     codec_name: string
     codec_type: string
@@ -6,10 +6,12 @@ export interface StreamInfo {
     isExtract: boolean
 }
 
-export interface MedialFileInfo {
+export interface IMedialFileInfo {
 
+    mediaPath: string
     fileName: string
-    streamInfo: Array<StreamInfo>
+    errorMessage: string
+    streamInfo: Array<IStreamInfo>
 
     // constructor(obj) {
     //     if (!obj) {
@@ -20,4 +22,9 @@ export interface MedialFileInfo {
     //     }
     // }
 
+}
+
+export interface IMedialInfo {
+    mediaPath: string
+    medialFileInfo: Array<IMedialFileInfo>
 }
