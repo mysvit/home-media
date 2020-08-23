@@ -1,10 +1,9 @@
 import * as express from 'express';
 import {ConfigService} from "../config/config";
 import {FileLib} from "../core/file-lib";
-import {IMedialFileInfo, IMedialInfo} from "../shared/classes/medial-file-info";
+import {IMediaContainer, IMediaFileInfo, IMediaInfo} from "../shared/classes/medial-file-info";
 import {ExecLib} from '../core/exec-lib'
 import {FFmpegLib, FFmpegParserLib} from '../core/ffmpeg-lib'
-import * as path from 'path'
 import {exec} from 'child_process'
 
 export class TransformerApi {
@@ -23,20 +22,42 @@ export class TransformerApi {
 class Transformer {
 
     public static getMediaInfo(request: express.Request, response: express.Response) {
-        const mi = <IMedialInfo>request.body
+        const mi = <IMediaInfo>request.body
         FileLib.readDir(mi.mediaPath)
             .subscribe((fileNames: Array<string>) => {
-                mi.medialFileInfo = <Array<IMedialFileInfo>>fileNames
-                    .map(fn => <IMedialFileInfo>{mediaPath: mi.mediaPath, fileName: fn})
+                mi.mediaContainer = <Array<IMediaContainer>>
+                    fileNames.map(fn => <IMediaContainer>{
+                            mainMedialFile: <IMediaFileInfo>{
+                                mediaPath: mi.mediaPath, fileName: fn
+                            }
+                        }
+                    )
                 response.status(200).send(mi)
             })
     }
 
     public static getMedialFileInfo(request: express.Request, response: express.Response) {
         const config = ConfigService.DefaultWindowsConfig()
-        const mfi = <IMedialFileInfo>request.body
+        const mfi = <IMediaFileInfo>request.body
         if (Transformer.checkFileName(mfi.fileName)) {
-            exec(FFmpegLib.ffprobeCodecInfo({mfi: mfi, config: config}), {cwd: mfi.mediaPath},
+            ExecLib.exec(FFmpegLib.ffprobeCodecInfo({mfi: mfi, config: config}), {cwd: mfi.mediaPath})
+                .subscribe(
+                    (result: Array<string>) => {
+                        mfi.streamInfo = FFmpegParserLib.ffprobeCodecInfoParse(result[0])
+                        response.status(200).send(mfi)
+                    },
+                    error => {
+                        mfi.errorMessage = error.message
+                        response.status(200).send(mfi)
+                    })
+        }
+    }
+
+    public static getMediaFileStreams(request: express.Request, response: express.Response) {
+        const config = ConfigService.DefaultWindowsConfig()
+        const mfi = <IMediaFileInfo>request.body
+        if (Transformer.checkFileName(mfi.fileName)) {
+            exec(FFmpegLib.getStreams({config: config, mfi: mfi}), {cwd: mfi.mediaPath},
                 (error, stdout, stderr) => {
                     if (error) {
                         mfi.errorMessage = stderr
@@ -49,33 +70,15 @@ class Transformer {
         }
     }
 
-    public static getMediaFileStreams(request: express.Request, response: express.Response) {
-        const config = ConfigService.DefaultWindowsConfig()
-        const mif = <IMedialFileInfo>request.body
-        if (Transformer.checkFileName(mif.fileName)) {
-            ExecLib.exec(FFmpegLib.getStreams({config: config, mfi: mif}))
-                .subscribe(
-                    stdOut => {
-                        response.status(200).send(stdOut)
-                    },
-                    error => {
-                        response.status(200).send(error)
-                    })
+    public static startConversion(request: express.Request, response: express.Response) {
+        // create temp folder if not exist
+        // check if  [process] file exist and process not running
+        // copy original file to temp folder
+        // extract streams
+        // convert streams to new types
+        // create new media file
+        // copy file to original location
 
-            // const child = spawn(config.ffmpegFilePath, [FFmpegLib.getStreams({config: config, mif: mif})])
-            // const child = spawn('cmd', ['/?'])
-            // let i = 0
-            // response.setHeader('Content-Type', 'text/html');
-            // for await (const data of child.stdout) {
-            //     i++
-            //     console.log(`stdout from the child: ${data}`);
-            //     const ss = i.toString(2)
-            //     console.log('await', ss);
-            //     response.write(data)
-            // }
-            // response.end();
-            // console.log('end')
-        }
     }
 
     private static checkFileName(fileName) {

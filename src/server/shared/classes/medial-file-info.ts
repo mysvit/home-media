@@ -6,25 +6,28 @@ export interface IStreamInfo {
     isExtract: boolean
 }
 
-export interface IMedialFileInfo {
-
+export interface IMediaFileInfo {
     mediaPath: string
     fileName: string
     errorMessage: string
     streamInfo: Array<IStreamInfo>
-
-    // constructor(obj) {
-    //     if (!obj) {
-    //         return
-    //     }
-    //     if (obj.fileName) {
-    //         this.fileName = obj.fileName
-    //     }
-    // }
-
 }
 
-export interface IMedialInfo {
+export interface INewStream {
+    codec_type: string
+}
+
+export interface INewMediaFileInfo {
+    errorMessage: string
+    newStream: Array<INewStream>
+}
+
+export interface IMediaContainer {
+    mainMedialFile: IMediaFileInfo
+    newMedialFile: INewMediaFileInfo
+}
+
+export interface IMediaInfo {
     mediaPath: string
-    medialFileInfo: Array<IMedialFileInfo>
+    mediaContainer: Array<IMediaContainer>
 }

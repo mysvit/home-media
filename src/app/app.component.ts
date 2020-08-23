@@ -1,6 +1,6 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {IMedialFileInfo, IMedialInfo} from '../server/shared/classes/medial-file-info'
+import {IMediaFileInfo, IMediaInfo} from '../server/shared/classes/medial-file-info'
 
 @Component({
     selector: 'app-root',
@@ -9,7 +9,7 @@ import {IMedialFileInfo, IMedialInfo} from '../server/shared/classes/medial-file
 })
 export class AppComponent {
 
-    medialInfo: IMedialInfo = <IMedialInfo>{mediaPath:'c:\\temp\\home_media\\media'};
+    mediaInfo: IMediaInfo = <IMediaInfo>{mediaPath: 'c:\\temp\\home_media\\media'};
 
     @ViewChild('ffmpegOUT') ffmpegOUT: ElementRef
 
@@ -17,20 +17,24 @@ export class AppComponent {
     }
 
     getMediaInfo(): void {
-        this.httpClient.post<any>('api/transformer/get-media-info', this.medialInfo)
-            .subscribe((medialInfo: IMedialInfo) => this.medialInfo = medialInfo);
+        this.httpClient.post<any>('api/transformer/get-media-info', this.mediaInfo)
+            .subscribe((medialInfo: IMediaInfo) => this.mediaInfo = medialInfo);
     }
 
-    getFileInfo(mfi: IMedialFileInfo) {
+    getFileInfo(mfi: IMediaFileInfo) {
         // const medialFileInfo = <IMedialFileInfo>{fileName: file.fileName}
         this.httpClient.post<any>('api/transformer/get-media-file-info', mfi)
-            .subscribe((resMedialFileInfo: IMedialFileInfo) => {
+            .subscribe((resMedialFileInfo: IMediaFileInfo) => {
                 mfi.errorMessage = resMedialFileInfo.errorMessage
                 mfi.streamInfo = resMedialFileInfo.streamInfo
             });
     }
 
-    getMediaFileStreams(file: IMedialFileInfo) {
+    markToConvert(file: IMediaFileInfo) {
+
+    }
+
+    getMediaFileStreams(file: IMediaFileInfo) {
         file.streamInfo[1].isExtract = true
 
         this.httpClient.post('api/transformer/get-media-file-streams', file)

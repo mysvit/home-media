@@ -2,18 +2,18 @@
 
 import {AppConfig} from '../config/config'
 import * as path from 'path'
-import {IMedialFileInfo, IStreamInfo} from '../shared/classes/medial-file-info'
+import {IMediaFileInfo, IStreamInfo} from '../shared/classes/medial-file-info'
 
 export class FFmpegLib {
 
-    static ffprobeCodecInfo(param: { mfi: IMedialFileInfo; config: AppConfig }) {
+    static ffprobeCodecInfo(param: { mfi: IMediaFileInfo; config: AppConfig }) {
         const ffprobe_parameters = '-v error -show_format -show_streams';
         const execString = `"${param.config.ffprobeFilePath}" ${ffprobe_parameters} "${param.mfi.fileName}"`
         console.log(execString)
         return execString
     }
 
-    static getStreams(param: { mfi: IMedialFileInfo; config: AppConfig }) {
+    static getStreams(param: { mfi: IMediaFileInfo; config: AppConfig }) {
         // const mediaFileName = path.resolve(param.config.mediaPath, param.mif.fileName)
         let execString = `"${param.config.ffmpegFilePath}" -y -i "${param.mfi.fileName}" `
         param.mfi.streamInfo.forEach(s => {

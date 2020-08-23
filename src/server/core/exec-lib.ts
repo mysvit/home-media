@@ -1,10 +1,16 @@
 import {bindNodeCallback} from 'rxjs'
-import {exec} from 'child_process'
+import {ChildProcess, exec, ExecException, ExecOptions} from 'child_process'
 
 export class ExecLib {
 
-    static exec(command) {
-        return bindNodeCallback(exec)(command)
+    static exec(command: string, options: ExecOptions) {
+        return bindNodeCallback(execWithOption)(command, options)
     }
 
+}
+
+function execWithOption(command: string,
+                        options: ExecOptions,
+                        callback?: (error: ExecException | null, stdout: string, stderr: string) => void): ChildProcess {
+    return exec(command, options, callback)
 }

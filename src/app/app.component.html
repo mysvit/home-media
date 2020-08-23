@@ -1,24 +1,27 @@
 <label for="mediaPath">Enter media path</label>
-<input id="mediaPath" [style.width]="'200px'" [(ngModel)]="this.medialInfo.mediaPath">
+<input id="mediaPath" [style.width]="'200px'" [(ngModel)]="this.mediaInfo.mediaPath">
 <button (click)="this.getMediaInfo()">Get Media Info:</button>
 
 <div class="hm-media-container">
-    <ng-container *ngFor="let file of this.medialInfo.medialFileInfo">
-        <div class="hm-media-file">
-            <div>
-                {{file.fileName}}
-                <button (click)="this.getFileInfo(file)">get info</button>
-                <button (click)="this.getMediaFileStreams(file)">get stream</button>
+    <ng-container *ngFor="let media of this.mediaInfo.mediaContainer">
+        <div class="hm-media-file-container">
+
+            <div class="hm-media-file">
+                <button (click)="this.getFileInfo(media.mainMedialFile)">i</button>
+                {{media.mainMedialFile.fileName}}
+                <button *ngIf="media.mainMedialFile.streamInfo" (click)="this.markToConvert(media.mainMedialFile)">>
+                </button>
             </div>
-            <ng-template [ngIf]="file.errorMessage" [ngIfElse]="infoList">
-                <div>{{file.errorMessage}}</div>
+            <ng-template [ngIf]="media.mainMedialFile.errorMessage" [ngIfElse]="infoList">
+                <div>{{media.mainMedialFile.errorMessage}}</div>
             </ng-template>
             <ng-template #infoList>
-                <div *ngFor="let info of file.streamInfo">
+                <div class="hm-stream-item" *ngFor="let info of media.mainMedialFile.streamInfo">
                     <input type="checkbox" id="{{info.id}}">
                     <label for="{{info.id}}">{{info.id}} {{info.codec_type}} {{info.codec_name}}</label>
                 </div>
             </ng-template>
+
         </div>
     </ng-container>
 </div>

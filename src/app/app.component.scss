@@ -1,13 +1,21 @@
-.hm-media-file {
+.hm-media-container {
+  margin: 10px;
+}
+
+.hm-media-file-container {
   flex: auto;
   cursor: pointer;
-  padding: 10px;
+  padding: 5px;
 
   &:hover {
     background-color: lightblue;
   }
 }
 
-.hm-media-container {
-  margin: 10px;
+.hm-media-file {
+  margin: 5px;
+}
+
+.hm-stream-item {
+  margin-left: 20px;
 }
