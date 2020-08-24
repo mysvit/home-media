@@ -5,6 +5,7 @@ import {IMediaContainer, IMediaFileInfo, IMediaInfo} from "../shared/classes/med
 import {ExecLib} from '../core/exec-lib'
 import {FFmpegLib, FFmpegParserLib} from '../core/ffmpeg-lib'
 import {exec} from 'child_process'
+import * as path from 'path'
 
 export class TransformerApi {
 
@@ -26,9 +27,9 @@ class Transformer {
         FileLib.readDir(mi.mediaPath)
             .subscribe((fileNames: Array<string>) => {
                 mi.mediaContainer = <Array<IMediaContainer>>
-                    fileNames.map(fn => <IMediaContainer>{
+                    fileNames.map(fileName => <IMediaContainer>{
                             mainMedialFile: <IMediaFileInfo>{
-                                mediaPath: mi.mediaPath, fileName: fn
+                                mediaPath: mi.mediaPath, fileName: fileName, fileExt: path.extname(fileName)
                             }
                         }
                     )

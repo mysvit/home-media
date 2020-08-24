@@ -8,9 +8,9 @@
 
             <div class="hm-media-file">
                 <button (click)="this.getFileInfo(media.mainMedialFile)">i</button>
-                {{media.mainMedialFile.fileName}}
-                <button *ngIf="media.mainMedialFile.streamInfo" (click)="this.markToConvert(media.mainMedialFile)">>
-                </button>
+                <div class="text">{{media.mainMedialFile.fileName}}</div>
+                <button *ngIf="media.mainMedialFile.streamInfo" (click)="this.markToConvert(media)">></button>
+                <div class="text"><b>{{media.newMedialFile?.fileExt}}</b></div>
             </div>
             <ng-template [ngIf]="media.mainMedialFile.errorMessage" [ngIfElse]="infoList">
                 <div>{{media.mainMedialFile.errorMessage}}</div>
@@ -18,7 +18,15 @@
             <ng-template #infoList>
                 <div class="hm-stream-item" *ngFor="let info of media.mainMedialFile.streamInfo">
                     <input type="checkbox" id="{{info.id}}">
-                    <label for="{{info.id}}">{{info.id}} {{info.codec_type}} {{info.codec_name}}</label>
+                    <label for="{{info.id}}">{{info.map_id}} {{info.codec_type}} {{info.codec_name}}</label>
+                    <div class="new-stream" *ngIf="media.newMedialFile">
+                        <ng-container *ngFor="let newStream of this.getNewStream(info, media.newMedialFile)">
+                            <label for="{{newStream.id}}">{{newStream.codec_type}}</label>
+                            <select id="{{newStream.id}}">
+                                <option value=".ac3">.ac3</option>
+                            </select>
+                        </ng-container>
+                    </div>
                 </div>
             </ng-template>
 

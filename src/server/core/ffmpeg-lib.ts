@@ -3,6 +3,7 @@
 import {AppConfig} from '../config/config'
 import * as path from 'path'
 import {IMediaFileInfo, IStreamInfo} from '../shared/classes/medial-file-info'
+import {v4 as uuid4} from 'uuid';
 
 export class FFmpegLib {
 
@@ -53,22 +54,22 @@ export class FFmpegParserLib {
     static ffprobeCodecInfoParse(ffprobeOut: string) {
         let streamInfo: Array<IStreamInfo> = []
         const lines = ffprobeOut.split('\r\n')
-        let id = 0;
+        let map_id = 0;
         if (lines[0] !== '[STREAM]') {
             return streamInfo
         } else {
-            streamInfo.push(<IStreamInfo>{id: id})
+            streamInfo.push(<IStreamInfo>{id: uuid4(), map_id: map_id})
         }
         for (let i = 0; i < lines.length; i++) {
             if (lines[i].indexOf('[/STREAM]') >= 0) {
-                id++
+                map_id++
             }
             const param = this.getCodecParam(lines[i])
             if (param) {
-                if (!streamInfo[id]) {
-                    streamInfo.push(<IStreamInfo>{id: id})
+                if (!streamInfo[map_id]) {
+                    streamInfo.push(<IStreamInfo>{id: uuid4(), map_id: map_id})
                 }
-                streamInfo[id][param[0]] = param[1]
+                streamInfo[map_id][param[0]] = param[1]
             }
         }
         return streamInfo

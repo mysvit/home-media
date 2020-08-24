@@ -1,5 +1,6 @@
 export interface IStreamInfo {
-    id: number
+    id: string
+    map_id: number
     codec_name: string
     codec_type: string
 
@@ -9,15 +10,18 @@ export interface IStreamInfo {
 export interface IMediaFileInfo {
     mediaPath: string
     fileName: string
+    fileExt: string
     errorMessage: string
     streamInfo: Array<IStreamInfo>
 }
 
 export interface INewStream {
+    id: string
     codec_type: string
 }
 
 export interface INewMediaFileInfo {
+    fileExt: string
     errorMessage: string
     newStream: Array<INewStream>
 }

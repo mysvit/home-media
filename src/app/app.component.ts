@@ -1,6 +1,13 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {IMediaFileInfo, IMediaInfo} from '../server/shared/classes/medial-file-info'
+import {
+    IMediaContainer,
+    IMediaFileInfo,
+    IMediaInfo,
+    INewMediaFileInfo,
+    INewStream,
+    IStreamInfo
+} from '../server/shared/classes/medial-file-info'
 
 @Component({
     selector: 'app-root',
@@ -30,8 +37,12 @@ export class AppComponent {
             });
     }
 
-    markToConvert(file: IMediaFileInfo) {
-
+    markToConvert(mediaContainer: IMediaContainer) {
+        mediaContainer.newMedialFile = <INewMediaFileInfo>{fileExt: '.mkv', newStream: []}
+        mediaContainer.mainMedialFile.streamInfo.forEach(stream => {
+            stream.isExtract = true
+            mediaContainer.newMedialFile.newStream.push(<INewStream>{id: stream.id, codec_type: stream.codec_type})
+        })
     }
 
     getMediaFileStreams(file: IMediaFileInfo) {
@@ -44,4 +55,10 @@ export class AppComponent {
             });
     }
 
+
+    getNewStream(mainStream: IStreamInfo, newMedialFile: INewMediaFileInfo) {
+        return newMedialFile.newStream.filter(f => f.id === mainStream.id)
+    }
+
 }
+
