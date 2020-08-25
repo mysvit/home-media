@@ -1,11 +1,12 @@
 import * as express from 'express';
 import {ConfigService} from "../config/config";
 import {FileLib} from "../core/file-lib";
-import {IMediaContainer, IMediaFileInfo, IMediaInfo} from "../shared/classes/medial-file-info";
+import {IMediaFileInfo} from "../shared/classes/medial-file-info";
 import {ExecLib} from '../core/exec-lib'
 import {FFmpegLib, FFmpegParserLib} from '../core/ffmpeg-lib'
 import {exec} from 'child_process'
 import * as path from 'path'
+import {IMediaSelector} from '../shared/classes/media-selector'
 
 export class TransformerApi {
 
@@ -23,14 +24,12 @@ export class TransformerApi {
 class Transformer {
 
     public static getMediaInfo(request: express.Request, response: express.Response) {
-        const mi = <IMediaInfo>request.body
+        const mi = <IMediaSelector>request.body
         FileLib.readDir(mi.mediaPath)
             .subscribe((fileNames: Array<string>) => {
-                mi.mediaContainer = <Array<IMediaContainer>>
-                    fileNames.map(fileName => <IMediaContainer>{
-                            mainMedialFile: <IMediaFileInfo>{
-                                mediaPath: mi.mediaPath, fileName: fileName, fileExt: path.extname(fileName)
-                            }
+                mi.mediaFiles = <Array<IMediaFileInfo>>
+                    fileNames.map(fileName => <IMediaFileInfo>{
+                            mediaPath: mi.mediaPath, fileName: fileName, fileExt: path.extname(fileName)
                         }
                     )
                 response.status(200).send(mi)
@@ -88,8 +87,3 @@ class Transformer {
     }
 
 }
-
-function exe(arg) {
-
-}
-

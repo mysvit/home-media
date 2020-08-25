@@ -1,0 +1,49 @@
+<label for="mediaPath">Enter media path</label>
+<input id="mediaPath" [style.width]="'200px'" [(ngModel)]="this.sMediaTransformer.mediaSelector.mediaPath">
+<button (click)="getMediaInfo()">Get Media Info:</button>
+<button (click)="closeSelector()">Close</button>
+
+<div class="hm-selector-container">
+
+    <div class="hm-media-container">
+        <div class="hm-media-file-container" *ngFor="let mediaFile of sMediaTransformer.mediaSelector.mediaFiles">
+
+            <div class="hm-media-file">
+                <button (click)="getFileInfo(mediaFile)">i</button>
+                {{mediaFile.fileName}}
+                <button (click)="addFileToTransform(mediaFile)">></button>
+            </div>
+            <ng-template [ngIf]="mediaFile.errorMessage" [ngIfElse]="infoList">
+                <div>{{mediaFile.errorMessage}}</div>
+            </ng-template>
+            <ng-template #infoList>
+                <div class="hm-stream-item" *ngFor="let streamInfo of mediaFile.streamInfo">
+                    {{streamInfo.map_id}} {{streamInfo.codec_type}} {{streamInfo.codec_name}}
+                </div>
+            </ng-template>
+
+        </div>
+    </div>
+
+
+    <div class="hm-media-container">
+        <div class="hm-media-file-container" *ngFor="let mediaFileTrans of sMediaTransformer.mediaTransformer.mediaFiles">
+
+            <div class="hm-media-file">
+                <button (click)="addFileToSelector(mediaFileTrans)"><</button>
+                {{mediaFileTrans.fileName}}
+                <button (click)="getFileInfo(mediaFileTrans)">i</button>
+            </div>
+            <ng-template [ngIf]="mediaFileTrans.errorMessage" [ngIfElse]="infoList">
+                <div>{{mediaFileTrans.errorMessage}}</div>
+            </ng-template>
+            <ng-template #infoList>
+                <div class="hm-stream-item" *ngFor="let streamInfo of mediaFileTrans.streamInfo">
+                    {{streamInfo.map_id}} {{streamInfo.codec_type}} {{streamInfo.codec_name}}
+                </div>
+            </ng-template>
+
+        </div>
+    </div>
+
+</div>

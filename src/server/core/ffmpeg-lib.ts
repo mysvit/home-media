@@ -17,12 +17,12 @@ export class FFmpegLib {
     static getStreams(param: { mfi: IMediaFileInfo; config: AppConfig }) {
         // const mediaFileName = path.resolve(param.config.mediaPath, param.mif.fileName)
         let execString = `"${param.config.ffmpegFilePath}" -y -i "${param.mfi.fileName}" `
-        param.mfi.streamInfo.forEach(s => {
-            if (s.isExtract) {
-                const streamName = path.resolve(`${s.id}_${s.codec_type}.${s.codec_name}`)
-                execString += ` -map 0:${s.id} -c copy ${streamName}`
-            }
-        })
+        // param.mfi.streamInfo.forEach(s => {
+        //     if (s.isExtract) {
+        //         const streamName = path.resolve(`${s.id}_${s.codec_type}.${s.codec_name}`)
+        //         execString += ` -map 0:${s.id} -c copy ${streamName}`
+        //     }
+        // })
         console.log(execString)
         const outFile = path.resolve('out.txt')
         execString += ` > "${outFile}" 2>&1`
