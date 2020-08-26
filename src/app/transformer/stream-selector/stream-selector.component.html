@@ -1,0 +1,53 @@
+<div class="hm-selector-container v">
+
+    <div class="hm-media-container" *ngIf="sMediaTransformer.mediaTransformer?.streams?.length > 0">
+        <button (click)="sendForTransformation()">sent to transformation</button>
+
+        <div class="hm-media-file-container" *ngFor="let stream of sMediaTransformer.mediaTransformer.streams">
+
+            <div class="hm-media-file">
+                <button (click)="removeStream(stream)">x</button>
+                <div class="text">{{stream.fileName}}</div>
+            </div>
+            <div class="hm-stream-item">
+                {{stream.sourceStream.map_id}} {{stream.sourceStream.codec_type}} {{stream.sourceStream.codec_name}}
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="hm-media-container">
+        <button (click)="selectForTransformation()">Select for transformation</button>
+
+        <div class="hm-media-file-container" *ngFor="let mediaFileTrans of sMediaTransformer.streamSelector.mediaFiles">
+
+            <div class="hm-media-file">
+                <button (click)="getFileInfo(mediaFileTrans)">i</button>
+                <div class="text">{{mediaFileTrans.fileName}}</div>
+            </div>
+            <ng-template [ngIf]="mediaFileTrans.errorMessage" [ngIfElse]="infoList">
+                <div>{{mediaFileTrans.errorMessage}}</div>
+            </ng-template>
+            <ng-template #infoList>
+                <div class="hm-stream-item" *ngFor="let streamInfo of mediaFileTrans.streamInfo">
+                    <input type="checkbox" id="{{streamInfo.id}}" [(ngModel)]="streamInfo.checked">
+                    <label for="{{streamInfo.id}}">{{streamInfo.map_id}} {{streamInfo.codec_type}} {{streamInfo.codec_name}}</label>
+                </div>
+            </ng-template>
+
+        </div>
+    </div>
+
+</div>
+
+
+<!--<p>stream-selector works!</p>-->
+<!--<div class="new-stream" *ngIf="media.newMedialFile">-->
+<!--    <ng-container *ngFor="let newStream of this.getNewStream(info, media.newMedialFile)">-->
+<!--        <label for="{{newStream.id}}">{{newStream.codec_type}}</label>-->
+<!--        <select id="{{newStream.id}}">-->
+<!--            <option value=".ac3">.ac3</option>-->
+<!--        </select>-->
+<!--    </ng-container>-->
+<!--</div>-->

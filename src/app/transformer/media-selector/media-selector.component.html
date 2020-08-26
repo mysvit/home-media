@@ -1,7 +1,6 @@
 <label for="mediaPath">Enter media path</label>
 <input id="mediaPath" [style.width]="'200px'" [(ngModel)]="this.sMediaTransformer.mediaSelector.mediaPath">
 <button (click)="getMediaInfo()">Get Media Info:</button>
-<button (click)="closeSelector()">Close</button>
 
 <div class="hm-selector-container">
 
@@ -10,7 +9,7 @@
 
             <div class="hm-media-file">
                 <button (click)="getFileInfo(mediaFile)">i</button>
-                {{mediaFile.fileName}}
+                <div class="text">{{mediaFile.fileName}}</div>
                 <button (click)="addFileToTransform(mediaFile)">></button>
             </div>
             <ng-template [ngIf]="mediaFile.errorMessage" [ngIfElse]="infoList">
@@ -27,11 +26,13 @@
 
 
     <div class="hm-media-container">
-        <div class="hm-media-file-container" *ngFor="let mediaFileTrans of sMediaTransformer.mediaTransformer.mediaFiles">
+        <button (click)="selectForTransformation()">Select for transformation</button>
+
+        <div class="hm-media-file-container" *ngFor="let mediaFileTrans of sMediaTransformer.streamSelector.mediaFiles">
 
             <div class="hm-media-file">
                 <button (click)="addFileToSelector(mediaFileTrans)"><</button>
-                {{mediaFileTrans.fileName}}
+                <div class="text">{{mediaFileTrans.fileName}}</div>
                 <button (click)="getFileInfo(mediaFileTrans)">i</button>
             </div>
             <ng-template [ngIf]="mediaFileTrans.errorMessage" [ngIfElse]="infoList">

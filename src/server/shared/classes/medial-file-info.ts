@@ -3,6 +3,8 @@ export interface IStreamInfo {
     map_id: number
     codec_name: string
     codec_type: string
+
+    checked: boolean
 }
 
 export interface IMediaFileInfo {

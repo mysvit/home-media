@@ -9,10 +9,12 @@ import {IMediaTransformer} from '../../server/shared/classes/media-transformer'
 })
 export class MediaTransformerService {
 
-    mediaSelector: IMediaSelector = <IMediaSelector>{mediaPath: 'c:\\temp\\home_media\\media'};
-    mediaTransformer: IMediaSelector = <IMediaSelector>{mediaPath: 'c:\\temp\\home_media\\media'};
+    mediaSelector: IMediaSelector = <IMediaSelector>{mediaPath: 'c:\\temp\\home_media\\media'}
+    streamSelector: IMediaSelector = <IMediaSelector>{mediaPath: 'c:\\temp\\home_media\\media'}
+    mediaTransformer: IMediaTransformer = <IMediaTransformer>{streams: []}
 
-    isSelectMedia: boolean
+    isMediaSelector: boolean
+    isStreamSelector: boolean
 
     constructor(private httpClient: HttpClient) {
     }

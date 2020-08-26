@@ -1,3 +1,6 @@
-<button (click)="selectMediasForTransformation()">Select media</button>
+<button (click)="selectMediasForTransformation()">Media Selector</button>
+<button (click)="selectStreamsForTransformation()">Stream Selector</button>
 <br>
-<app-media-selector *ngIf="sMediaTransformer.isSelectMedia"></app-media-selector>
+<br>
+<app-media-selector *ngIf="sMediaTransformer.isMediaSelector"></app-media-selector>
+<app-stream-selector *ngIf="sMediaTransformer.isStreamSelector"></app-stream-selector>

@@ -15,7 +15,11 @@ export class MediaTransformerComponent implements OnInit {
     }
 
     selectMediasForTransformation() {
-        this.sMediaTransformer.isSelectMedia = true
+        this.sMediaTransformer.isMediaSelector = true
+    }
+
+    selectStreamsForTransformation() {
+        this.sMediaTransformer.isStreamSelector = true
     }
 
 }
