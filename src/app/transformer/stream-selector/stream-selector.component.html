@@ -2,15 +2,22 @@
 
     <div class="hm-media-container" *ngIf="sMediaTransformer.mediaTransformer?.streams?.length > 0">
         <button (click)="sendForTransformation()">sent to transformation</button>
+        <input [(ngModel)]="sMediaTransformer.mediaTransformer.fileName">
 
-        <div class="hm-media-file-container" *ngFor="let stream of sMediaTransformer.mediaTransformer.streams">
+        <div class="f f-col" *ngFor="let stream of sMediaTransformer.mediaTransformer.streams">
 
-            <div class="hm-media-file">
+            <div class="f f-row f-aic">
                 <button (click)="removeStream(stream)">x</button>
-                <div class="text">{{stream.fileName}}</div>
-            </div>
-            <div class="hm-stream-item">
-                {{stream.sourceStream.map_id}} {{stream.sourceStream.codec_type}} {{stream.sourceStream.codec_name}}
+                <div class="f f-col f-ng">
+                    <div>{{stream.fileName}}</div>
+                    <div>{{stream.sourceStream.map_id}} {{stream.sourceStream.codec_type}} {{stream.sourceStream.codec_name}}</div>
+                </div>
+                <div class="f f-col">
+                    <div>{{stream.sourceStream.codec_type}}</div>
+                    <div *ngFor="let outStream of stream.outStreams">
+                        <app-codec-selector [stream]="outStream"></app-codec-selector>
+                    </div>
+                </div>
             </div>
 
         </div>

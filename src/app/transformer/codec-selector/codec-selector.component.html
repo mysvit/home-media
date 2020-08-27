@@ -1,0 +1,14 @@
+<ng-container [ngSwitch]="stream.codec_type">
+    <ng-container *ngSwitchCase="'video'">
+        <label for="video{{stream.id}}">{{stream.map_id}}</label>
+        <select id="video{{stream.id}}" [(ngModel)]="stream.codec_name">
+            <option *ngFor="let type of MediaTypes.VideoTypes" value="{{type.value}}">{{type.text}}</option>
+        </select>
+    </ng-container>
+    <ng-container *ngSwitchCase="'audio'">
+        <label for="audio{{stream.id}}">{{stream.map_id}}</label>
+        <select id="audio{{stream.id}}" [(ngModel)]="stream.codec_name">
+            <option *ngFor="let type of MediaTypes.AudioTypes" value="{{type.value}}">{{type.text}}</option>
+        </select>
+    </ng-container>
+</ng-container>

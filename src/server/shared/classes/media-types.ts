@@ -1,14 +1,14 @@
 export class MediaTypes {
 
-    static VideoTypes = {
-        hevc: 'hevc',
-        mp4: 'mp4'
-    }
+    static VideoTypes = [
+        {value: 'hevc', text: 'hevc'},
+        {value: 'mp4', text: 'mp4'}
+    ]
 
-    static AudioTypes = {
-        ac3: 'ac3',
-        dts: 'dts'
-    }
+    static AudioTypes = [
+        {value: 'ac3', text: 'ac3'},
+        {value: 'dts', text: 'dts'}
+    ]
 
     static SubtitleTypes = {
         sub: 'sub'

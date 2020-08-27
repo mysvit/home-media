@@ -6,14 +6,16 @@ import {FormsModule} from '@angular/forms';
 import {StreamSelectorComponent} from './transformer/stream-selector/stream-selector.component';
 import {MediaSelectorComponent} from './transformer/media-selector/media-selector.component'
 import {MediaTransformerService} from './transformer/media-transformer.service'
-import {MediaTransformerComponent} from './transformer/media-transformer.component'
+import {MediaTransformerComponent} from './transformer/media-transformer.component';
+import { CodecSelectorComponent } from './transformer/codec-selector/codec-selector.component'
 
 @NgModule({
     declarations: [
         AppComponent,
         MediaTransformerComponent,
         StreamSelectorComponent,
-        MediaSelectorComponent
+        MediaSelectorComponent,
+        CodecSelectorComponent
     ],
     imports: [
         HttpClientModule,

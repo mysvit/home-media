@@ -1,0 +1,119 @@
+//Flex
+
+.f {
+  min-height: 0;
+  min-width: 0;
+  flex: auto;
+  position: relative;
+}
+
+.f-1 {
+  flex: 1; //similar to flex: 1 1 0
+  position: relative;
+}
+
+.f-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.f-row-r {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.f-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.f-col-r {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.f-scroll {
+  overflow: auto;
+}
+
+.f-scroll-y {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.f-scroll-x {
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+
+.f-ng {
+  flex-grow: 0;
+}
+
+.f-ns {
+  flex-shrink: 0;
+}
+
+.f-mc {
+  min-height: min-content;
+}
+
+.f-wrap {
+  flex-wrap: wrap;
+}
+
+.f-jcs {
+  justify-content: flex-start;
+}
+
+.f-jcc {
+  justify-content: center;
+}
+
+.f-jcsb {
+  justify-content: space-between;
+}
+
+.f-jcsa {
+  justify-content: space-around;
+}
+
+.f-jce {
+  justify-content: flex-end;
+}
+
+.f-ais {
+  align-items: flex-start;
+}
+
+.f-aic {
+  align-items: center;
+}
+
+.f-aist {
+  align-items: stretch;
+}
+
+.f-aie {
+  align-items: flex-end;
+}
+
+.f-tal {
+  text-align: left;
+}
+
+.f-tac {
+  text-align: center;
+}
+
+.f-taj {
+  text-align: justify;
+}
+
+.f-tar {
+  text-align: right;
+}
+
+.f-wsnw {
+  white-space: nowrap;
+}
