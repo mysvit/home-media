@@ -3,6 +3,7 @@ import {MediaTransformerService} from '../media-transformer.service'
 import {IMediaFileInfo, IStreamInfo} from '../../../server/shared/classes/medial-file-info'
 import {IStreamOut, IStreamTransformer} from '../../../server/shared/classes/media-transformer'
 import {MediaTypes} from 'src/server/shared/classes/media-types';
+import {v4 as uuid4} from 'uuid';
 
 @Component({
     selector: 'app-stream-selector',
@@ -33,7 +34,7 @@ export class StreamSelectorComponent implements OnInit {
                             mediaPath: mediaFile.mediaPath,
                             fileName: mediaFile.fileName,
                             sourceStream: <IStreamInfo>stream,
-                            outStreams: [<IStreamOut>{codec_type: stream.codec_type, codec_name: stream.codec_name}],
+                            outStreams: [<IStreamOut>{id: uuid4(), codec_type: stream.codec_type, codec_name: stream.codec_name}],
                         })
                         stream.checked = false
                     }
@@ -43,12 +44,21 @@ export class StreamSelectorComponent implements OnInit {
     }
 
     sendForTransformation() {
-
+        console.log(this.sMediaTransformer.mediaTransformer)
     }
 
     removeStream(stream: IStreamTransformer) {
         const index = this.sMediaTransformer.mediaTransformer.streams.findIndex(f => f.sourceStream.id === stream.sourceStream.id)
         this.sMediaTransformer.mediaTransformer.streams.splice(index, 1)
+    }
+
+    addCopyStream(stream: IStreamTransformer) {
+        stream.outStreams.push(<IStreamOut>{codec_type: stream.sourceStream.codec_type, codec_name: stream.sourceStream.codec_name})
+    }
+
+    delCopyStream(stream: IStreamTransformer, outStream: IStreamOut) {
+        const index = stream.outStreams.findIndex(f => f.id === outStream.id)
+        stream.outStreams.splice(index, 1)
     }
 
 }

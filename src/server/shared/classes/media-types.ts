@@ -10,8 +10,8 @@ export class MediaTypes {
         {value: 'dts', text: 'dts'}
     ]
 
-    static SubtitleTypes = {
-        sub: 'sub'
-    }
+    static SubtitleTypes = [
+        {value: 'subrip', text: 'subrip'},
+    ]
 
 }

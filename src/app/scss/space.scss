@@ -1,0 +1,31 @@
+@import "variable";
+
+// Margin and Padding
+// mm-5: marging 5
+// mmt-10: marging-top 10
+// mmx-10: marging-right & left 10
+
+// same for padding
+// pp-5: padding 5
+
+@each $prop, $abbrev in (margin: mm, padding: pp) {
+  @each $size, $lengths in $spacers {
+    $length-x: map-get($lengths, x);
+    $length-y: map-get($lengths, y);
+
+    .#{$abbrev}-#{$size}  { #{$prop}:        $length-y $length-x; }
+    .#{$abbrev}t-#{$size} { #{$prop}-top:    $length-y; }
+    .#{$abbrev}r-#{$size} { #{$prop}-right:  $length-x; }
+    .#{$abbrev}b-#{$size} { #{$prop}-bottom: $length-y; }
+    .#{$abbrev}l-#{$size} { #{$prop}-left:   $length-x; }
+
+    .#{$abbrev}x-#{$size} {
+      #{$prop}-right: $length-x;
+      #{$prop}-left:  $length-x;
+    }
+    .#{$abbrev}y-#{$size} {
+      #{$prop}-top:    $length-y;
+      #{$prop}-bottom: $length-y;
+    }
+  }
+}

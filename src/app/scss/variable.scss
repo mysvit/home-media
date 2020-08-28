@@ -1,0 +1,66 @@
+$border-width: 1px;
+$border-style: solid;
+
+$colors: (
+        transparent-: (
+                0: transparent
+        ),
+        white-: (
+                0: #FFFFFF
+        ),
+        black-: (
+                0: #000000,
+        ),
+        gray-: (
+                0: #808080,
+        ),
+        blue-: (
+                0: blue,
+        ),
+        red-: (
+                0: red,
+        ),
+        orange-: (
+                0: #FFA500,
+        ),
+        yellow-: (
+                0: yellow,
+        ),
+        green-: (
+                0: #40A178,
+        )
+);
+
+$spacers: (
+        0: (
+                x: 0,
+                y: 0
+        ),
+        5: (
+                x: 5px,
+                y: 5px
+        ),
+        10: (
+                x: 10px,
+                y: 10px
+        ),
+        15: (
+                x: 15px,
+                y: 15px
+        ),
+);
+
+$sizes: (
+        0: (
+                w: 0,
+                h: 0
+        ),
+        5: (
+                w: 5px,
+                h: 5px
+        ),
+        10: (
+                w: 10px,
+                h: 10px
+        ),
+);
