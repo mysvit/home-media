@@ -33,24 +33,6 @@ export class FFmpegLib {
 
 export class FFmpegParserLib {
 
-    // static getStreamInfo(ffprobeOut: Array<any>) {
-    //     const regex = /^\s*Stream.*$/gm;
-    //     let streamInfo: Array<StreamInfo> = []
-    //     let m
-    //     let i = 0
-    //     while ((m = regex.exec(ffprobeOut[1])) !== null) {
-    //         // This is necessary to avoid infinite loops with zero-width matches
-    //         if (m.index === regex.lastIndex) {
-    //             regex.lastIndex++
-    //         }
-    //         m.forEach(match => {
-    //             streamInfo.push(<StreamInfo>{id: i, title: match})
-    //             i++
-    //         })
-    //     }
-    //     return streamInfo
-    // }
-
     static ffprobeCodecInfoParse(ffprobeOut: string) {
         let streamInfo: Array<IStreamInfo> = []
         const lines = ffprobeOut.split('\r\n')
