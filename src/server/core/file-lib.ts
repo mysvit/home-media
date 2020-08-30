@@ -1,6 +1,7 @@
-import {readdir} from 'fs';
+import * as fs from 'fs';
+import {mkdir, readdir} from 'fs';
 import {bindNodeCallback} from "rxjs";
-import * as fs from 'fs'
+import {rimraf} from 'rimraf';
 
 export class FileLib {
 
@@ -8,8 +9,20 @@ export class FileLib {
         return bindNodeCallback(readdir)(dirName)
     }
 
+    static mkDir(dirName) {
+        return bindNodeCallback(mkdir)(dirName)
+    }
+
+    static delNotEmptyDir(dirName) {
+        return bindNodeCallback(rimraf)(dirName)
+    }
+
     static readFile(fileName) {
         return bindNodeCallback(fs.readFile)(fileName)
+    }
+
+    static copyFile(srcFileName, dstFileName) {
+        return bindNodeCallback(fs.copyFile)(srcFileName, dstFileName)
     }
 
 }

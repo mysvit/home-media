@@ -2,7 +2,6 @@ import {AppConfig} from '../config/config'
 import {interval} from 'rxjs'
 import {map} from 'rxjs/operators'
 import {FileLib} from '../core/file-lib'
-import {IStreamTransformer} from '../shared/classes/media-transformer'
 import * as path from 'path'
 import {TransformerProcess} from './transformer-process'
 
@@ -32,10 +31,11 @@ export class QueryProcesses {
     }
 
     private static getQueryType(fileName: string) {
-        if (fileName.indexOf('transformer')) {
+        if (fileName.indexOf('transformer') >= 0) {
             return QueryType.Transformer
         }
     }
+
 }
 
 enum QueryType {
