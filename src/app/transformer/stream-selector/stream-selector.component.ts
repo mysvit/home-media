@@ -44,7 +44,7 @@ export class StreamSelectorComponent implements OnInit {
     }
 
     sendForTransformation() {
-        console.log(this.sMediaTransformer.mediaTransformer)
+        console.log(JSON.stringify(this.sMediaTransformer.mediaTransformer))
     }
 
     removeStream(stream: IStreamTransformer) {
