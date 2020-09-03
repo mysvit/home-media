@@ -12,7 +12,7 @@
     "serve:ssr": "node dist/home-media/server/main.js",
     "build:ssr": "ng build --prod && ng run home-media:server:production",
     "prerender": "ng run home-media:prerender",
-    "test:ssr": "mocha -r ts-node/register src/server/**/*.spec.ts"
+    "test:ssr": "mocha --timeout 600000 -r ts-node/register src/server/**/*.spec.ts"
   },
   "private": true,
   "dependencies": {

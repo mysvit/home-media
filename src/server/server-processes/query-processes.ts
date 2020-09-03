@@ -1,6 +1,5 @@
 import {AppConfig} from '../config/config'
-import {interval} from 'rxjs'
-import {map} from 'rxjs/operators'
+import {of} from 'rxjs'
 import {FileLib} from '../core/file-lib'
 import * as path from 'path'
 import {TransformerProcess} from './transformer-process'
@@ -8,7 +7,8 @@ import {TransformerProcess} from './transformer-process'
 export class QueryProcesses {
 
     public static checkQuery(config: AppConfig) {
-        return interval(config.queryInterval).pipe(map(() => QueryProcesses.checkQueryFolder(config)))
+        return of(undefined)
+        // return interval(config.queryInterval).pipe(map(() => QueryProcesses.checkQueryFolder(config)))
     }
 
     public static checkQueryFolder(config: AppConfig) {

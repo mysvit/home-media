@@ -1,8 +1,9 @@
-import {IMediaTransformer, IStreamTransformer} from '../shared/classes/media-transformer'
+import {IMediaTransformer} from '../shared/classes/media-transformer'
 import {ConfigService} from '../config/config'
-import {forkJoin, of} from 'rxjs'
-import {map} from 'rxjs/operators'
+import {forkJoin, of, throwError} from 'rxjs'
+import {catchError, map} from 'rxjs/operators'
 import {FFmpegCommands} from '../core/ffmpeg-lib'
+import {FileLib} from '../core/file-lib'
 
 export class TransformerProcess {
 
@@ -12,9 +13,12 @@ export class TransformerProcess {
         const mediaTransformer = <IMediaTransformer>JSON.parse(data)
         return this.createMediaFolderInTemp(mediaTransformer)
             .pipe(
-                map(result => console.log(result))
+                map(result => console.log('result', result)),
+                catchError(error => {
+                    console.log('error', error)
+                    return of(false)
+                })
             )
-        // FileLib.mkDir(FFmpegCommands.getMediaExtractTempFolderFullPath())
         // create temp folder if not exist
         // check if  [process] file exist and process not running
         // copy original file to temp folder
@@ -27,13 +31,12 @@ export class TransformerProcess {
     static createMediaFolderInTemp(mediaTransformer: IMediaTransformer) {
         const listOfMediaDir: Array<string> = []
         mediaTransformer.streams.forEach(stream => {
-            if (listOfMediaDir.findIndex(f => f === stream.fileName) < 0) {
-                listOfMediaDir.push(FFmpegCommands.getMediaExtractTempFolderFullPath(stream.fileName))
+            const uniquePath = FFmpegCommands.getMediaExtractTempFolderFullPath(stream.fileName)
+            if (listOfMediaDir.findIndex(f => f === uniquePath) < 0) {
+                listOfMediaDir.push(uniquePath)
             }
         })
-        // return forkJoin(listOfMediaDir.map(dirName => FileLib.mkDir(dirName)))
-        // return forkJoin(listOfMediaDir.map(dirName => of(undefined)))
-        return of(undefined)
+        return forkJoin(listOfMediaDir.map(dirName => FileLib.mkDir(dirName)))
     }
 
 
