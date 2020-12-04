@@ -1,7 +1,7 @@
 import {IMediaTransformer} from '../shared/classes/media-transformer'
 import {ConfigService} from '../config/config'
 import {forkJoin, of, throwError} from 'rxjs'
-import {catchError, map} from 'rxjs/operators'
+import {catchError, map, switchMap} from 'rxjs/operators'
 import {FFmpegCommands} from '../core/ffmpeg-lib'
 import {FileLib} from '../core/file-lib'
 
@@ -11,19 +11,19 @@ export class TransformerProcess {
 
     public static startTransformation(data) {
         const mediaTransformer = <IMediaTransformer>JSON.parse(data)
-        return this.createMediaFolderInTemp(mediaTransformer)
+        return of()
             .pipe(
-                map(result => console.log('result', result)),
+                switchMap(() => this.createMediaFolderInTemp(mediaTransformer)),
+                switchMap(() => this.extractStreamsToTemp(mediaTransformer)),
                 catchError(error => {
                     console.log('error', error)
                     return of(false)
                 })
             )
-        // create temp folder if not exist
-        // check if  [process] file exist and process not running
-        // copy original file to temp folder
-        // extract streams
-        // convert streams to new types
+        //- check if  [process] file exist and process not running
+        //+ create temp folder if not exist base on name of file
+        // extract all streams of file to temp folder
+        // convert streams to new types if need
         // create new media file
         // copy file to original location
     }
@@ -39,6 +39,9 @@ export class TransformerProcess {
         return forkJoin(listOfMediaDir.map(dirName => FileLib.mkDir(dirName)))
     }
 
+    private static extractStreamsToTemp(mediaTransformer: IMediaTransformer) {
+        return undefined;
+    }
 
     // public static getMediaFileStreams(request: express.Request, response: express.Response) {
     //     const config = ConfigService.DefaultWindowsConfig()
