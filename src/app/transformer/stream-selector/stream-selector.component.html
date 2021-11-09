@@ -1,7 +1,7 @@
 <div class="hm-selector-container v">
 
     <div class="hm-media-container" *ngIf="sMediaTransformer.mediaTransformer?.streams?.length > 0">
-        <button (click)="sendForTransformation()">sent to transformation</button>
+        <button (click)="sendForTransformation()">SEND TO TRANSFORMATION</button>
         <input [(ngModel)]="sMediaTransformer.mediaTransformer.fileName">
 
         <div class="f f-col mm-5" *ngFor="let stream of sMediaTransformer.mediaTransformer.streams">
@@ -13,9 +13,12 @@
                     <div>{{stream.sourceStream.map_id}} {{stream.sourceStream.codec_type}} {{stream.sourceStream.codec_name}}</div>
                 </div>
                 <div class="f f-col mml-10">
-                    <div><button (click)="addCopyStream(stream)">+</button>{{stream.sourceStream.codec_type}}</div>
+                    <div>
+                        <button (click)="addCopyStream(stream)">+</button>
+                        {{stream.sourceStream.codec_type}}</div>
                     <div *ngFor="let outStream of stream.outStreams">
-                        <button (click)="delCopyStream(stream, outStream)">-</button><app-codec-selector [stream]="outStream"></app-codec-selector>
+                        <button (click)="delCopyStream(stream, outStream)">-</button>
+                        <app-codec-selector [stream]="outStream"></app-codec-selector>
                     </div>
                 </div>
             </div>

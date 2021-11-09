@@ -12,7 +12,7 @@ export class TransformerApi {
     public path = '/transformer';
 
     constructor() {
-        this.router.post(this.path + '/get-media-info', Transformer.getMediaInfo);
+        this.router.post(this.path + '/get-files', Transformer.getFiles);
         this.router.post(this.path + '/get-media-file-info', Transformer.getMedialFileInfo);
     }
 
@@ -20,7 +20,7 @@ export class TransformerApi {
 
 class Transformer {
 
-    public static getMediaInfo(request: express.Request, response: express.Response) {
+    public static getFiles(request: express.Request, response: express.Response) {
         const mi = <IMediaSelector>request.body
         FileLib.readDir(mi.mediaPath)
             .subscribe((fileNames: Array<string>) => {

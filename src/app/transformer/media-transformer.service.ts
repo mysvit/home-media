@@ -20,7 +20,7 @@ export class MediaTransformerService {
     }
 
     getMediaInfo(): void {
-        this.httpClient.post<any>('api/transformer/get-media-info', this.mediaSelector)
+        this.httpClient.post<any>('api/transformer/get-files', this.mediaSelector)
             .subscribe((mediaSelector: IMediaSelector) => this.mediaSelector = mediaSelector);
     }
 
