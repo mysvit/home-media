@@ -2,4 +2,4 @@
 
 ## Web app for transformation media files avi, mp4, mkv to mkv container
 
-# under construction !
+# stop developing !
